@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+<head jang="ja">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/3.3.2/css/tabulator_site.min.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/3.3.2/js/tabulator.min.js"></script>
+</head>
+<body>
+Temperature:
+<select class="select_units" id="temp_unit">
+  <option value="*:1.0" selected>Celsius</option>
+  <option value="*:1.8,+:32.0">Fahrenheit</option>
+  <option value="+:273.15">Kelvin</option>
+</select>
+Pressure:
+<select class="select_units" id="pressure_unit">
+  <option value="*:1.0" selected>hPa</option>
+  <option value="*:100">Pa</option>
+  <option value="*:0.75006375541921">mmHg</option>
+</select>
+Speed:
+<select class="select_units" id="speed_unit">
+  <option value="*:1.0">mph</option>
+  <option value="*:0.868976">kts</option>
+  <option value="*:0.44704" selected>m/s</option>
+  <option value="*:1.60934">km/h</option>
+</select>
+Visibility:
+<select class="select_units" id="visibility_unit">
+  <option value="*:1.0">Miles</option>
+  <option value="*:1.60934" selected>km</option>
+  <option value="*:0.868976">NM</option>
+</select>
+<div id="weather-table"></div>
+<input type="button" id="reload" value="Reload"/><br/>
+
+<script>
+function floatFormat(cell, formatterParams) {
+    var v = cell.getValue();
+    if (v !== null) {
+        // get unit conversion formurala
+        var f = cell.getField();
+        var ftype = f.split("_")[1] || f;
+        var coefs = $("#" + ftype + "_unit").val(); // "*:1.8,+32.0", etc.
+        if (coefs) {
+          coefs = coefs.split(","); // "*:1.8", etc.
+          coefs.forEach(function (c, i) {
+              var opef = c.split(":"); // ["*", "1.8"], etc.
+              console.log(opef);
+              if (opef[0] == "*") {
+                v *= parseFloat(opef[1]);
+              } else if (opef[0] == "+") {
+                v += parseFloat(opef[1]);
+              }
+              console.log(v);
+            });
+        }
+        return v.toFixed(1);
+    }
+    return "";
+}
+function stateFormat(cell, formatterParams) {
+    var v = cell.getValue();
+    return "<img width='32pt' src='https://www.metaweather.com/static/img/weather/" + v + ".svg'/>";
+}
+$("#weather-table").tabulator({
+    "layout": "fitDataFill",
+    "footerElement": "Powered by <a href='https://www.metaweather.com/' target=_blank>MetaWeather<sub>beta</sub></a>. " + "If you want to know the meaning of each value, see <a href='https://www.metaweather.com/api/' target=_blank>API</a>.",
+    "variableHeight": true,
+    ajaxResponse:function(url, params, response) {
+        // url - the URL of the request
+        // params - the parameters passed with the request
+        // response - the JSON object returned in the body of the response.
+
+        return response.consolidated_weather; //return the tableData peroperty of a response json object
+    },
+    "columns": [
+        {
+            "field": "applicable_date",
+            "title": "applicable date",
+            "frozen": true,
+        },
+        {
+            "align": "center", "formatter": stateFormat,
+            "field": "weather_state_abbr",
+            "title": "weather state",
+            "frozen": true,
+        },
+        {
+            "title": "temperature",
+            "columns": [
+                {
+                    "align": "right", "formatter": floatFormat,
+                    "field": "min_temp",
+                    "title": "min"
+                },
+                {
+                    "align": "right", "formatter": floatFormat,
+                    "field": "the_temp",
+                    "title": "avg"
+                },
+                {
+                    "align": "right", "formatter": floatFormat,
+                    "field": "max_temp",
+                    "title": "max"
+                }
+            ]
+        },
+        {
+            "align": "right", "formatter": floatFormat,
+            "title": "pressure",
+            "field": "air_pressure",
+        },
+        {
+            "title": "wind",
+            "columns": [
+                {
+                    "align": "right", "formatter": floatFormat,
+                    "field": "wind_speed",
+                    "title": "speed"
+                },
+                {
+                    "title": "direction",
+                    "columns": [
+                        {
+                            "field": "wind_direction_compass"
+                        },
+                        {
+                            "align": "right", "formatter": floatFormat,
+                            "field": "wind_direction"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "humidity",
+            "field": "humidity",
+            "formatter": "progress"
+        },
+        {
+            "align": "right", "formatter": floatFormat,
+            "title": "visibility",
+            "field": "visibility"
+        },
+        {
+            "title": "predictability",
+            "field": "predictability",
+            "formatter": "progress"
+        }
+    ],
+    "tooltips": true,
+    "tooltipsHeader": true
+});
+$("#weather-table").tabulator("setData", "https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/1118370/");
+$(".select_units").on("change", function() {
+    $("#weather-table").tabulator(
+      "redraw",
+       true /* trigger full rerender including all data and rows */
+    );
+});
+$("#reload").on("click", function() {
+    // You can call the setData function to refresh the data at any point
+    $("#weather-table").tabulator("setData");
+});
+</script>
+</body>
+</html>

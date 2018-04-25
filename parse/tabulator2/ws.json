@@ -1,0 +1,199 @@
+{
+    "exportFormatVersion": 2,
+    "exportTime": "2018-04-11 16:02:48",
+    "containerVersion": {
+        "path": "accounts/2379206815/containers/8739813/versions/0",
+        "accountId": "2379206815",
+        "containerId": "8739813",
+        "containerVersionId": "0",
+        "container": {
+            "path": "accounts/2379206815/containers/8739813",
+            "accountId": "2379206815",
+            "containerId": "8739813",
+            "name": "srkngm.work",
+            "publicId": "GTM-P5ZG3LK",
+            "usageContext": [
+                "WEB"
+            ],
+            "fingerprint": "1523462519975",
+            "tagManagerUrl": "https://tagmanager.google.com/#/container/accounts/2379206815/containers/8739813/workspaces?apiLink=container"
+        },
+        "tag": [
+            {
+                "accountId": "2379206815",
+                "containerId": "8739813",
+                "tagId": "2",
+                "name": "UA AllPage",
+                "type": "ua",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "overrideGaSettings",
+                        "value": "true"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "trackType",
+                        "value": "TRACK_PAGEVIEW"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "trackingId",
+                        "value": "UA-112934538-2"
+                    }
+                ],
+                "fingerprint": "1522580228270",
+                "firingTriggerId": [
+                    "2147479553"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT"
+            },
+            {
+                "accountId": "2379206815",
+                "containerId": "8739813",
+                "tagId": "4",
+                "name": "nav click 計測",
+                "type": "ua",
+                "parameter": [
+                    {
+                        "type": "BOOLEAN",
+                        "key": "nonInteraction",
+                        "value": "false"
+                    },
+                    {
+                        "type": "BOOLEAN",
+                        "key": "overrideGaSettings",
+                        "value": "true"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventCategory",
+                        "value": "nav"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "trackType",
+                        "value": "TRACK_EVENT"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventAction",
+                        "value": "click"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "eventLabel",
+                        "value": "{{Click Text}}"
+                    },
+                    {
+                        "type": "TEMPLATE",
+                        "key": "trackingId",
+                        "value": "UA-112934538-2"
+                    }
+                ],
+                "fingerprint": "1522587388984",
+                "firingTriggerId": [
+                    "11"
+                ],
+                "tagFiringOption": "ONCE_PER_EVENT"
+            }
+        ],
+        "trigger": [
+            {
+                "accountId": "2379206815",
+                "containerId": "8739813",
+                "triggerId": "11",
+                "name": "nav click",
+                "type": "CLICK",
+                "filter": [
+                    {
+                        "type": "MATCH_REGEX",
+                        "parameter": [
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg0",
+                                "value": "{{Click Text}}"
+                            },
+                            {
+                                "type": "TEMPLATE",
+                                "key": "arg1",
+                                "value": "^(TOP|PRODUCTS|MOVIE)$"
+                            }
+                        ]
+                    }
+                ],
+                "fingerprint": "1522587806584"
+            }
+        ],
+        "builtInVariable": [
+            {
+                "accountId": "2379206815",
+                "containerId": "8739813",
+                "type": "PAGE_URL",
+                "name": "Page URL"
+            },
+            {
+                "accountId": "2379206815",
+                "containerId": "8739813",
+                "type": "PAGE_HOSTNAME",
+                "name": "Page Hostname"
+            },
+            {
+                "accountId": "2379206815",
+                "containerId": "8739813",
+                "type": "PAGE_PATH",
+                "name": "Page Path"
+            },
+            {
+                "accountId": "2379206815",
+                "containerId": "8739813",
+                "type": "REFERRER",
+                "name": "Referrer"
+            },
+            {
+                "accountId": "2379206815",
+                "containerId": "8739813",
+                "type": "EVENT",
+                "name": "Event"
+            },
+            {
+                "accountId": "2379206815",
+                "containerId": "8739813",
+                "type": "CLICK_ELEMENT",
+                "name": "Click Element"
+            },
+            {
+                "accountId": "2379206815",
+                "containerId": "8739813",
+                "type": "CLICK_CLASSES",
+                "name": "Click Classes"
+            },
+            {
+                "accountId": "2379206815",
+                "containerId": "8739813",
+                "type": "CLICK_ID",
+                "name": "Click ID"
+            },
+            {
+                "accountId": "2379206815",
+                "containerId": "8739813",
+                "type": "CLICK_TARGET",
+                "name": "Click Target"
+            },
+            {
+                "accountId": "2379206815",
+                "containerId": "8739813",
+                "type": "CLICK_URL",
+                "name": "Click URL"
+            },
+            {
+                "accountId": "2379206815",
+                "containerId": "8739813",
+                "type": "CLICK_TEXT",
+                "name": "Click Text"
+            }
+        ],
+        "fingerprint": "0",
+        "tagManagerUrl": "https://tagmanager.google.com/#/versions/accounts/2379206815/containers/8739813/versions/0?apiLink=version"
+    }
+}
