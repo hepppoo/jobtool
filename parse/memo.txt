@@ -1,0 +1,9 @@
+
+
+以下をjsonから取り出す
+
+tag番号 tag名
+trriger番号 trriger名
+variables番号 variables名
+
+web storageに入れる
