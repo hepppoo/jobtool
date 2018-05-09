@@ -119,4 +119,49 @@ $(function(){
         }
         $('#res').html(str);
     }
+
+
+    function tableToCSV(tableId, separator, delimiter) {
+    var csvDataAry = []; // テーブルデータを配列に格納
+    var csvDataTxt = ""; // テーブルデータをテキスト形式に格納
+    var rowData; // 行データ
+    var colData; // 列データ
+    var delimStr = delimiter ? "'" : ""; // ダブルクォート囲い文字 true:あり | false:なし
+    try {
+        $("#" + tableId + " tr").each(function(rowIdx, row) { // テーブル行数分の処理を行う
+            rowData = $(row).children();　// 行データを取得
+
+
+            csvDataAry[rowIdx] = [];
+            rowData.each(function(colIdx, col) { // テーブル列分の処理を行う
+console.log(col);
+
+                colData = $.trim($(col).text());  // 列ごとに文字列を取得
+                csvDataAry[rowIdx][colIdx] = colData; // 列データを配列に格納
+                csvDataTxt += delimStr + colData + delimStr + separator; // 区切り文字、囲い文字を追加
+            });
+            csvDataTxt = csvDataTxt.slice(0,-1); // 余分な区切り文字を削除
+            csvDataTxt += "\r\n"; // 改行文字を追加
+        });
+    } catch(e) {
+        return null;
+    }
+    return csvDataTxt;
+}
+
+    $(document).ready(function(){
+        $("#csv").click(function(){
+            var fileName = "テストデータ.csv";
+            var csvData = tableToCSV("res", "\t", false);
+            if (csvData == undefined || csvData == "") {
+                alert("CSVデータを出力できません");
+                return false;
+            } else {
+                $("#csvDownload").attr("download", fileName);
+                $("#csvDownload").attr("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csvData));
+
+            }
+        });
+    });
+
 });
