@@ -1,18 +1,19 @@
 @charset "utf-8";
 
-html, body {
+/* html, body {
     margin: 0;
     padding: 0;
-}
+} */
 
-#menu {
+/* #menu {
     display: none;
-}
+} */
 
 /*
     Cusco Sky table styles
     written by Braulio Soncco http://www.buayacorp.com
 */
+/*
 table {
     border-collapse:collapse;
     color:#555;

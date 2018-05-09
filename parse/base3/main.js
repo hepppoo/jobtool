@@ -2,11 +2,40 @@ $(function(){
     'use strict';
 
     var upload = document.getElementById('upload');
+    var menu = document.getElementById('menu');
     var tag = document.getElementById('tag');
     var trriger = document.getElementById('trriger');
     var variables = document.getElementById('variables');
-    if (localStorage) var st = localStorage;
+    var reset = document.getElementById('reset');
 
+
+    if (localStorage) var st = localStorage;
+    if(st.length) {
+        menuSwitch(true);
+        showTagList();
+    }else{
+        menuSwitch(false);
+    }
+
+    function menuSwitch(bool){
+        //menu切り替え
+        if(bool){
+            menu.style.display = "block";
+            document.getElementById("contents").style.display = "block";            document.getElementById("uploader").style.display = "none";
+
+        } else {
+            menu.style.display = "none";
+            document.getElementById("contents").style.display = "none";            document.getElementById("uploader").style.display = "block";
+
+        }
+
+    }
+
+
+    reset.addEventListener('click', function() {
+        st.clear();
+        location.reload();
+    });
 
     upload.addEventListener('click', function () {
         //uploadfile読み込み
@@ -48,12 +77,15 @@ $(function(){
                 }
             });
 
+            menu.style.display = "block";
             showTagList();
+            menuSwitch(true);
         }
     });
 
     function showTagList(){
         var str = '';
+        str += '<thead><tr><th>tag name</th><th>firing trigger</th></tr></thead>'
         for (var i = 0, len = st.length; i < len; i++) {
             var k = st.key(i);
             console.log(k);
@@ -62,8 +94,10 @@ $(function(){
             // var k = JSON.parse(st.key(i));
             // var parsed = JSON.parse(st.getItem('tagId_'));
             //     $('#result1').html(parsed.name);
+
             if (parsed.tagId) {
-                str += '<tr>';
+                str += '<tbody><tr>';
+
                 str += '<td>' + parsed.name + '</td>';
                 if (parsed.firingTriggerId) {
 //todo:トリガーの分だけ回す
@@ -79,7 +113,7 @@ $(function(){
                     }
                 }
                 str += '<td>' + trgName + '</td>';
-                str += '</tr>';
+                str += '</tr></tbody>';
 
             }
         }
