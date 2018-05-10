@@ -20,12 +20,12 @@ $(function(){
     function menuSwitch(bool){
         //menu切り替え
         if(bool){
-            menu.style.display = "block";
-            document.getElementById("contents").style.display = "block";            document.getElementById("uploader").style.display = "none";
+            // menu.style.display = "block";
+            // document.getElementById("contents").style.display = "block";            document.getElementById("uploader").style.display = "none";
 
         } else {
-            menu.style.display = "none";
-            document.getElementById("contents").style.display = "none";            document.getElementById("uploader").style.display = "block";
+            // menu.style.display = "none";
+            // document.getElementById("contents").style.display = "none";            document.getElementById("uploader").style.display = "block";
 
         }
 
@@ -39,15 +39,15 @@ $(function(){
 
     upload.addEventListener('click', function () {
         //uploadfile読み込み
-        var uploadFile = document.getElementById('upload-file');
+        // var uploadFile = document.getElementById('upload-file');
         // var file = uploadFile.files[0];
-        var file = document.querySelector('input').files[0];
+        var file = document.querySelector('input#upload-file').files[0];
 
-        if (!file) alert('ファイルを選択してください。');
+        if (!file){ alert('ファイルを選択してください。'); return;}
 
         var uploadDataJson = new Object();
         // var uploadText = document.getElementById('res');
-        var fileToRead = document.querySelector('input').files[0];
+        // var fileToRead = document.querySelector('input').files[0];
         var reader = new FileReader();
 
         reader.readAsText(file);
@@ -77,7 +77,7 @@ $(function(){
                 }
             });
 
-            menu.style.display = "block";
+            // menu.style.display = "block";
             showTagList();
             menuSwitch(true);
         }
@@ -85,10 +85,13 @@ $(function(){
 
     function showTagList(){
         var str = '';
+        // str += '<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">';
+        str += '<table>';
         str += '<thead><tr><th>tag name</th><th>firing trigger</th></tr></thead>'
+        str += '<tbody>';
         for (var i = 0, len = st.length; i < len; i++) {
             var k = st.key(i);
-            console.log(k);
+            // console.log(k);
             var parsed = JSON.parse(st.getItem(k));
 
             // var k = JSON.parse(st.key(i));
@@ -96,7 +99,7 @@ $(function(){
             //     $('#result1').html(parsed.name);
 
             if (parsed.tagId) {
-                str += '<tbody><tr>';
+                str += '<tr>';
 
                 str += '<td>' + parsed.name + '</td>';
                 if (parsed.firingTriggerId) {
@@ -113,9 +116,12 @@ $(function(){
                     }
                 }
                 str += '<td>' + trgName + '</td>';
-                str += '</tr></tbody>';
+                str += '</tr>';
 
             }
+            str += '</tbody>';
+            str += '</table>';
+
         }
         $('#res').html(str);
     }
@@ -150,15 +156,23 @@ console.log(col);
 }
 
     $(document).ready(function(){
-        $("#csv").click(function(){
+        $("#download_csv").click(function(){
             var fileName = "テストデータ.csv";
             var csvData = tableToCSV("res", "\t", false);
             if (csvData == undefined || csvData == "") {
                 alert("CSVデータを出力できません");
                 return false;
             } else {
-                $("#csvDownload").attr("download", fileName);
-                $("#csvDownload").attr("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csvData));
+                var a = document.createElement('a');
+                a.textContent = 'json file download';
+                a.download = fileName;
+                a.href = URL.createObjectURL(new Blob([csvData], {type: 'text.plain'}));
+                a.dataset.downloadurl = ['text/plain', a.download_csv, a.href].join(':');
+                var downloadLink = document.getElementById('csv_download');
+                downloadLink.appendChild(a);
+                //
+                // $("#csvDownload").attr("download", fileName);
+                // $("#csvDownload").attr("href", "data:text/csv;charset=utf-8," + encodeURIComponent(csvData));
 
             }
         });
